@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scope-lib"
+version = "0.1.0"
+description = "Shared trust kernel: scope/anchor/policy schema + evaluation for agent-defense sensors"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "AGPL-3.0-or-later" }
+authors = [{ name = "Pedro Sordo Martinez", email = "amurlaniakea@gmail.com" }]
+keywords = ["agent-security", "scope", "policy", "anchor"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

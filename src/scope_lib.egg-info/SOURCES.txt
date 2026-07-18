@@ -1,0 +1,10 @@
+LICENSE
+pyproject.toml
+src/scope_lib/__init__.py
+src/scope_lib/evaluate.py
+src/scope_lib/schema.py
+src/scope_lib.egg-info/PKG-INFO
+src/scope_lib.egg-info/SOURCES.txt
+src/scope_lib.egg-info/dependency_links.txt
+src/scope_lib.egg-info/top_level.txt
+tests/test_scope_lib.py
