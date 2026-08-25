@@ -172,8 +172,8 @@ def test_schema_roundtrip_and_version_guard():
         policies={"t1": _policy().to_dict()},
         anchors={"t1": _anchor().to_dict()},
     )
-    import tempfile
     import os
+    import tempfile
 
     fd, path = tempfile.mkstemp(suffix=".json")
     os.close(fd)
@@ -188,9 +188,9 @@ def test_schema_roundtrip_and_version_guard():
 
 
 def test_schema_version_mismatch_raises():
-    import tempfile
-    import os
     import json
+    import os
+    import tempfile
 
     fd, path = tempfile.mkstemp(suffix=".json")
     os.close(fd)

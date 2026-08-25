@@ -31,7 +31,6 @@ No network. Pure local evaluation.
 
 from __future__ import annotations
 
-
 from .schema import Action, Anchor, Policy, ScopeVerdict, Verdict
 
 
@@ -67,35 +66,34 @@ def evaluate_scope(
         )
 
     # (i) sub-objective in authorized list
-    if policy is not None and action.claimed_subobjective is not None:
-        if action.claimed_subobjective in policy.authorized_subobjectives:
-            # irreversible actions need EXPLICIT authorization in the
-            # authorized_irreversible list; otherwise escalate to CONFIRM
-            if action.irreversible and action.claimed_subobjective not in getattr(
-                policy, "authorized_irreversible", []
-            ):
-                return ScopeVerdict(
-                    Verdict.CONFIRM,
-                    False,
-                    "i_subobjective_irreversible",
-                    "irreversible action needs explicit irreversible authorization",
-                )
+    if (
+        policy is not None
+        and action.claimed_subobjective is not None
+        and action.claimed_subobjective in policy.authorized_subobjectives
+    ):
+        # irreversible actions need EXPLICIT authorization in the
+        # authorized_irreversible list; otherwise escalate to CONFIRM
+        if action.irreversible and action.claimed_subobjective not in getattr(
+            policy, "authorized_irreversible", []
+        ):
             return ScopeVerdict(
-                Verdict.ALLOW,
-                True,
-                "i_subobjective",
-                f"sub-objective {action.claimed_subobjective} authorized",
+                Verdict.CONFIRM,
+                False,
+                "i_subobjective_irreversible",
+                "irreversible action needs explicit irreversible authorization",
             )
+        return ScopeVerdict(
+            Verdict.ALLOW,
+            True,
+            "i_subobjective",
+            f"sub-objective {action.claimed_subobjective} authorized",
+        )
 
     # (iii) transitive support, CLOSED transitions, non-irreversible only.
     # Placed BEFORE (ii): a support action (e.g. navigate/read) whose target
     # is an authorized resource reached through a CLOSED allowed transition
     # is evaluated as transitive support, not as a direct resource hit.
-    if (
-        policy is not None
-        and not action.irreversible
-        and action.tool in policy.allowed_transitions
-    ):
+    if policy is not None and not action.irreversible and action.tool in policy.allowed_transitions:
         if action.target is not None:
             for cat, values in policy.authorized_resources.items():
                 if action.target in values:
