@@ -30,7 +30,6 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
-
 SCHEMA_VERSION = "scope-lib/1.0"
 
 
@@ -86,7 +85,7 @@ class Policy:
         }
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "Policy":
+    def from_dict(cls, d: dict[str, Any]) -> Policy:
         return cls(
             policy_id=d["policy_id"],
             task_id=d["task_id"],
@@ -124,7 +123,7 @@ class Anchor:
         }
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "Anchor":
+    def from_dict(cls, d: dict[str, Any]) -> Anchor:
         return cls(
             task_id=d["task_id"],
             objective=d["objective"],
@@ -163,7 +162,7 @@ class Action:
         }
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "Action":
+    def from_dict(cls, d: dict[str, Any]) -> Action:
         return cls(
             task_id=d["task_id"],
             tool=d["tool"],
@@ -210,11 +209,10 @@ class PolicyStore:
         }
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "PolicyStore":
+    def from_dict(cls, d: dict[str, Any]) -> PolicyStore:
         if d.get("schema_version") != SCHEMA_VERSION:
             raise ValueError(
-                f"schema version mismatch: store={d.get('schema_version')} "
-                f"lib={SCHEMA_VERSION}"
+                f"schema version mismatch: store={d.get('schema_version')} lib={SCHEMA_VERSION}"
             )
         return cls(
             schema_version=d.get("schema_version", SCHEMA_VERSION),

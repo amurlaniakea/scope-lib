@@ -29,6 +29,7 @@ It contains NO network calls by design (review rule: a network call here
 would silently turn option (a) into option (b) -- prohibited).
 """
 
+from .evaluate import evaluate_scope
 from .schema import (
     Action,
     Anchor,
@@ -39,7 +40,6 @@ from .schema import (
     load_policy_store,
     save_policy_store,
 )
-from .evaluate import evaluate_scope
 
 __version__ = "0.1.0"
 __all__ = [
@@ -49,7 +49,7 @@ __all__ = [
     "PolicyStore",
     "ScopeVerdict",
     "Verdict",
+    "evaluate_scope",
     "load_policy_store",
     "save_policy_store",
-    "evaluate_scope",
 ]
