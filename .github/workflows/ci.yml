@@ -1,0 +1,31 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Historial completo para que gitleaks-action pueda escanear el
+          # diff del push sin fallar por "unknown revision" (shallow clone).
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies (dev tools)
+        run: |
+          pip install --upgrade pip
+          pip install ruff pytest bandit
+          pip install -e .
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: pytest
+      - run: bandit -r src -ll
+      - name: gitleaks (secret scan)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
